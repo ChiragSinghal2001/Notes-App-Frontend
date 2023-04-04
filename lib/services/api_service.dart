@@ -23,7 +23,8 @@ class ApiService {
 
   static Future<List<Note>> fetchNotes(String userid) async {
     Uri requestUri = Uri.parse(_baseUrl + "/lists");
-    var response = await https.post(requestUri, body: {"userid": userid});
+    var response = await https
+        .post(requestUri, body: {"userid": 'ChiragSinghal2001@gmail.com'});
     print("hello");
     print(response.body);
     var decoded = jsonDecode(response.body);
