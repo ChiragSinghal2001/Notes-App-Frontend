@@ -5,7 +5,7 @@ import 'package:notes_app/models/note.dart';
 import 'package:http/http.dart' as https;
 
 class ApiService {
-  static String _baseUrl = "https://notes-backend-ruddy.vercel.app/notes";
+  static String _baseUrl = "https://notes-app-backend-liart.vercel.app/notes";
 
   static Future<void> addNote(Note note) async {
     Uri requestUri = Uri.parse(_baseUrl + "/add");
