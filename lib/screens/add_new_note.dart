@@ -7,7 +7,9 @@ import 'package:uuid/uuid.dart';
 class AddNewNotePage extends StatefulWidget {
   final bool isUpdate;
   final Note? note;
-  const AddNewNotePage({Key? key, required this.isUpdate, this.note})
+  final String email;
+  const AddNewNotePage(
+      {Key? key, required this.isUpdate, required this.email, this.note})
       : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
   void addNewNote() {
     Note newNote = Note(
         id: const Uuid().v1(),
-        userid: "ChiragSinghal2001@gmail.com",
+        userid: widget.email,
         title: titleController.text,
         content: contentController.text,
         dateadded: DateTime.now());

@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/models/note.dart';
-import 'package:notes_app/pages/add_new_note.dart';
+import 'package:notes_app/screens/add_new_note.dart';
 import 'package:notes_app/providers/notes_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String email;
+
+  const HomePage({required this.email});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -17,10 +20,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtain the instance of NotesProvider
     NotesProvider notesProvider = Provider.of<NotesProvider>(context);
+
+    // Filter notes based on the received email ID
+    List<Note> filteredNotes = notesProvider.notes
+        .where((note) => note.userid == widget.email)
+        .toList();
+
+    // Apply search query filtering
+    List<Note> filteredNotesWithTitle = filteredNotes
+        .where((note) =>
+            note.title!.toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.pinkAccent,
         title: const Text("Notes App"),
         centerTitle: true,
       ),
@@ -63,6 +79,7 @@ class _HomePageState extends State<HomePage> {
                                             builder: (context) =>
                                                 AddNewNotePage(
                                                   isUpdate: true,
+                                                  email: widget.email,
                                                   note: currentNote,
                                                 )),
                                       );
@@ -125,13 +142,15 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pinkAccent,
         onPressed: () {
           Navigator.push(
             context,
             CupertinoPageRoute(
                 fullscreenDialog: true,
-                builder: (context) => const AddNewNotePage(
+                builder: (context) => AddNewNotePage(
                       isUpdate: false,
+                      email: widget.email,
                     )),
           );
         },

@@ -1,10 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_app/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotesProvider with ChangeNotifier {
   bool isLoading = true;
   List<Note> notes = [];
+  String email = "";
+  // Future<Null> Function() _email =
+
+  Future<String> getEmail() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    email = sp.getString('emailId') ?? '';
+
+    print("get email");
+    print(email);
+    return email;
+  }
 
   NotesProvider() {
     fetchNotes();
@@ -48,7 +60,10 @@ class NotesProvider with ChangeNotifier {
   }
 
   void fetchNotes() async {
-    notes = await ApiService.fetchNotes("chiragsinghal2001@gmail.com");
+    print("email fetchnotes ko mil rhi");
+    email = await getEmail();
+    print(email);
+    notes = await ApiService.fetchNotes(email);
     sortNotes();
     isLoading = false;
     notifyListeners();

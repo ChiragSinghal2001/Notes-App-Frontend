@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/pages/home_page.dart';
+import 'package:get/get.dart';
+import 'package:notes_app/screens/home_page.dart';
 import 'package:notes_app/providers/notes_provider.dart';
+import 'package:notes_app/screens/login_page.dart';
 import 'package:provider/provider.dart';
+import 'package:notes_app/providers/auth_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +21,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => NotesProvider(),
         ),
+        ChangeNotifierProvider<AuthProvider>(
+          create: (_) => AuthProvider(),
+        ),
       ],
-      child: const MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomePage(),
+        home: LoginPage(),
       ),
     );
   }
